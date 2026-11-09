@@ -458,7 +458,7 @@
   width: 100%;
   height: 100%;
   object-fit: cover;
-  object-position: 18% 50%;
+  object-position: 30% 100%;
 }
 
 .dir-a .dir-a__bar {
@@ -748,7 +748,7 @@
   }
 
   .dir-a .dir-a__frame img {
-    object-position: 0 0;
+    object-position: 0 100%;
   }
 
   .dir-a .dir-a__bar {
@@ -780,7 +780,7 @@
   }
 
   .dir-a .dir-a__card-photo img {
-    object-position: 50% 60%;
+    object-position: 50% 25%;
   }
 
   .dir-a .dir-a__card-main {
@@ -881,7 +881,7 @@
   }
 
   .dir-a .dir-a__frame img {
-    object-position: 0 43%;
+    object-position: 0 100%;
   }
 
   .dir-a .dir-a__bar {

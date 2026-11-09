@@ -513,7 +513,48 @@ body {
 }
 
 .fc-boards__after {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0 32px;
   margin-top: 28px;
+}
+
+.fc-top__thumbs {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px;
+  margin-top: 44px;
+}
+
+.fc-top__thumb {
+  display: block;
+  color: var(--fc-paper);
+  text-decoration: none;
+}
+
+.fc-top__thumb img {
+  display: block;
+  width: 100%;
+  height: auto;
+  border: 1px solid var(--fc-line-strong);
+}
+
+.fc-top__thumb span {
+  display: block;
+  margin-top: 10px;
+  font-size: 15px;
+  line-height: 1.4;
+  color: var(--fc-muted);
+}
+
+.fc-top__thumb:hover span,
+.fc-top__thumb:focus-visible span {
+  color: var(--fc-accent);
+}
+
+.fc-top__thumb:focus-visible {
+  outline: 2px solid var(--fc-accent);
+  outline-offset: 4px;
 }
 
 /* On a phone the boards take the whole width: they have their own margins,
@@ -1167,8 +1208,14 @@ textarea.fc-input {
   color: var(--fc-paper);
 }
 
-.fc-card__link {
+.fc-card__links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0 20px;
   margin: -4px 14px 8px 46px;
+}
+
+.fc-card__link {
   font-size: 15px;
 }
 
@@ -1302,7 +1349,7 @@ textarea.fc-input {
     padding: 20px;
   }
 
-  .fc-card__link {
+  .fc-card__links {
     margin-left: 14px;
   }
 }

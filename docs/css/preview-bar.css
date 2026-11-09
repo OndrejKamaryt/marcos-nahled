@@ -1,0 +1,125 @@
+/* Preview bar: the FortiCore frame around a homepage preview. Shared by both directions. */
+
+@font-face {
+  font-family: "Schibsted Grotesk";
+  font-style: normal;
+  font-display: swap;
+  font-weight: 400 900;
+  src: url("../fonts/shell/schibsted-grotesk-latin-wght-normal.woff2") format("woff2");
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+@font-face {
+  font-family: "Schibsted Grotesk";
+  font-style: normal;
+  font-display: swap;
+  font-weight: 400 900;
+  src: url("../fonts/shell/schibsted-grotesk-latin-ext-wght-normal.woff2") format("woff2");
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+
+.pv {
+  background: #061220;
+  color: #EDEBE6;
+  border-bottom: 1px solid #17304A;
+  font: 400 15px/1.45 "Schibsted Grotesk", Helvetica, Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+.pv--foot {
+  border-top: 1px solid #17304A;
+  border-bottom: 0;
+}
+
+.pv__in {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 6px 28px;
+  max-width: 1440px;
+  margin: 0 auto;
+  padding: 10px 24px;
+}
+
+@media (min-width: 900px) {
+  .pv__in {
+    padding: 10px 56px;
+  }
+}
+
+.pv__t {
+  margin: 0;
+  max-width: 60ch;
+  color: #A9B6C6;
+}
+
+.pv__t strong {
+  color: #EDEBE6;
+  font-weight: 600;
+}
+
+.pv__n {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0 22px;
+}
+
+.pv__n a {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  color: #EDEBE6;
+  text-decoration: underline;
+  text-decoration-color: #00E07A;
+  text-decoration-thickness: 2px;
+  text-underline-offset: 0.22em;
+}
+
+.pv__n a:hover {
+  color: #00E07A;
+}
+
+.pv__n a:focus-visible {
+  outline: 2px solid #00E07A;
+  outline-offset: 3px;
+  border-radius: 2px;
+}
+
+/* Phones: the bar keeps its label and links, and gives the page back its first screen. */
+@media (max-width: 599px) {
+  .pv__in {
+    gap: 2px 20px;
+    padding: 8px 16px;
+  }
+
+  .pv__t {
+    max-width: none;
+    font-size: 0;
+    line-height: 0;
+  }
+
+  .pv__t strong {
+    font-size: 14px;
+    line-height: 40px;
+  }
+
+  .pv__n {
+    gap: 0 16px;
+  }
+
+  .pv__n a {
+    min-height: 40px;
+    font-size: 14px;
+  }
+}
+
+@media (forced-colors: active) {
+  .pv {
+    border-color: CanvasText;
+  }
+
+  .pv__n a {
+    text-decoration-color: LinkText;
+  }
+}

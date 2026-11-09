@@ -1,0 +1,1421 @@
+/* Direction B, Open and natural: homepage preview.
+   One seven-column grid whose columns are the seven days of a training week.
+   The week rule (six charcoal bars, one sand) draws that grid at the top of every section. */
+
+@font-face {
+  font-family: "MPB Display";
+  font-style: normal;
+  font-display: swap;
+  font-weight: 200 800;
+  font-stretch: 75% 100%;
+  src: url("../fonts/b/bricolage-grotesque-latin-ext-standard-normal.woff2") format("woff2");
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+
+@font-face {
+  font-family: "MPB Display";
+  font-style: normal;
+  font-display: swap;
+  font-weight: 200 800;
+  font-stretch: 75% 100%;
+  src: url("../fonts/b/bricolage-grotesque-latin-standard-normal.woff2") format("woff2");
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+@font-face {
+  font-family: "MPB Text";
+  font-style: normal;
+  font-display: swap;
+  font-weight: 200 900;
+  src: url("../fonts/b/literata-latin-ext-wght-normal.woff2") format("woff2");
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+
+@font-face {
+  font-family: "MPB Text";
+  font-style: normal;
+  font-display: swap;
+  font-weight: 200 900;
+  src: url("../fonts/b/literata-latin-wght-normal.woff2") format("woff2");
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+/* Tokens: the board's palette, nothing added except the placeholder ground and a table hairline */
+
+:root {
+  --paper: #F3F0E8;
+  --ink: #171918;
+  --teal: #1F5450;
+  --sand: #C9B681;
+  --slate: #585E5A;
+  --shade: #E6E2D6;
+  --hair: #CDC7B8;
+  --field: #FBFAF6;
+  --display: "MPB Display", "Arial Narrow", "Helvetica Neue", Arial, sans-serif;
+  --text: "MPB Text", Georgia, "Times New Roman", serif;
+  --tick: 6px;
+  --in: clamp(20px, 2.6cqi, 32px);
+  --gut: 24px;
+  --sec: clamp(80px, 10vw, 152px);
+}
+
+@media (min-width: 900px) {
+  :root {
+    --gut: 56px;
+  }
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  background: var(--paper);
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+}
+
+body {
+  margin: 0;
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--text);
+  font-size: 1.0625rem;
+  line-height: 1.55;
+  font-synthesis: none;
+}
+
+h1,
+h2,
+h3,
+p,
+ol,
+ul,
+figure {
+  margin: 0;
+  padding: 0;
+}
+
+p {
+  text-wrap: pretty;
+}
+
+img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+[id] {
+  scroll-margin-top: 16px;
+}
+
+/* Room for the focus ring when the browser scrolls a focused control into view */
+a,
+button,
+input {
+  scroll-margin-block: 16px;
+}
+
+:focus-visible {
+  outline: 3px solid var(--ink);
+  outline-offset: 3px;
+}
+
+/* Frame */
+
+.b-wrap {
+  container: wrap / inline-size;
+  width: min(100% - 2 * var(--gut), 1328px);
+  margin-inline: auto;
+}
+
+.b-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+}
+
+/* The week: six charcoal bars and one sand bar. Every rule on the page is this. */
+
+.b-week {
+  display: grid;
+  grid-template-columns: repeat(7, minmax(0, 1fr));
+  gap: var(--tick);
+  height: 4px;
+}
+
+.b-week i {
+  display: block;
+  background: var(--ink);
+}
+
+.b-week i:last-child {
+  background: var(--sand);
+}
+
+.b-week--top {
+  height: clamp(8px, 0.9cqi, 12px);
+}
+
+.b-week--card {
+  --tick: 4px;
+  height: clamp(14px, 1.5cqi, 20px);
+}
+
+/* Wordmark: six letters, one rest, then the surname */
+
+.b-wm {
+  font-family: var(--display);
+  font-weight: 800;
+  font-stretch: 88%;
+  letter-spacing: -0.012em;
+  line-height: 1;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.b-wm__rest {
+  display: inline-block;
+  overflow: hidden;
+  width: 0.16em;
+  height: 0.66em;
+  margin-inline: 0.14em;
+  background: var(--sand);
+  white-space: pre;
+}
+
+/* Type */
+
+.b-h2 {
+  max-width: 14em;
+  font-family: var(--display);
+  font-size: clamp(2.375rem, 1.1rem + 4.4cqi, 4.5rem);
+  font-variation-settings: "opsz" 96;
+  font-weight: 800;
+  font-stretch: 85%;
+  letter-spacing: -0.012em;
+  line-height: 0.94;
+  text-wrap: balance;
+}
+
+.b-h2--small {
+  font-size: clamp(1.75rem, 1rem + 2.2cqi, 2.625rem);
+}
+
+.b-h3 {
+  font-family: var(--display);
+  font-size: clamp(1.375rem, 1rem + 1.2cqi, 1.875rem);
+  font-weight: 750;
+  font-stretch: 88%;
+  letter-spacing: -0.005em;
+  line-height: 1.1;
+  text-wrap: balance;
+}
+
+.b-lead {
+  max-width: 30em;
+  font-size: clamp(1.125rem, 1rem + 0.45cqi, 1.375rem);
+  line-height: 1.5;
+}
+
+.b-small {
+  max-width: 34em;
+  color: var(--slate);
+  font-family: var(--display);
+  font-size: 0.9375rem;
+  font-weight: 450;
+  font-stretch: 96%;
+  line-height: 1.4;
+}
+
+/* Actions: the board's teal button and underlined link */
+
+.b-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 48px;
+  margin: 0;
+  padding: 0.75em 1.3em;
+  border: 2px solid transparent;
+  border-radius: 2px;
+  background: var(--teal);
+  color: var(--paper);
+  font-family: var(--display);
+  font-size: 1.0625rem;
+  font-weight: 700;
+  font-stretch: 92%;
+  line-height: 1.1;
+  text-align: center;
+  text-decoration: none;
+  cursor: pointer;
+  transition: background-color 0.15s ease;
+}
+
+.b-btn:hover {
+  background: var(--ink);
+}
+
+.b-link {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  color: var(--ink);
+  font-family: var(--display);
+  font-size: 1.0625rem;
+  font-weight: 650;
+  font-stretch: 92%;
+  line-height: 1.2;
+  text-decoration: underline;
+  text-decoration-thickness: 2px;
+  text-underline-offset: 0.24em;
+  transition: color 0.15s ease;
+}
+
+.b-link:hover {
+  color: var(--teal);
+}
+
+.b-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 14px 24px;
+}
+
+/* Placeholders: the board's "photo to come" box, used for everything still to come */
+
+.b-ph {
+  display: flex;
+  align-items: flex-end;
+  min-height: 120px;
+  padding: 10px;
+  background:
+    linear-gradient(to top right, transparent calc(50% - 1px), var(--slate) calc(50% - 1px), var(--slate) calc(50% + 0.5px), transparent calc(50% + 0.5px)),
+    linear-gradient(to bottom right, transparent calc(50% - 1px), var(--slate) calc(50% - 1px), var(--slate) calc(50% + 0.5px), transparent calc(50% + 0.5px)),
+    var(--shade);
+}
+
+.b-ph p {
+  max-width: 24em;
+  padding: 0.32em 0.6em;
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--display);
+  font-size: 0.9375rem;
+  font-weight: 650;
+  font-stretch: 92%;
+  line-height: 1.25;
+}
+
+.b-ph--text {
+  min-height: clamp(120px, 12cqi, 168px);
+}
+
+.b-ph--small {
+  min-height: 92px;
+}
+
+.b-ph--story {
+  min-height: clamp(112px, 15cqi, 216px);
+}
+
+.b-ph--article {
+  aspect-ratio: 5 / 2;
+  min-height: 0;
+}
+
+.b-ph--portrait {
+  aspect-ratio: 1 / 1;
+}
+
+.b-pair,
+.b-trio {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: var(--tick);
+}
+
+/* Photos */
+
+.b-hero__photo img,
+.b-about__photo img,
+.b-progs__photo img,
+.b-final__photo img,
+.b-apply__photo img {
+  height: 100%;
+  object-fit: cover;
+}
+
+/* Sections */
+
+.b-sec {
+  padding-top: var(--sec);
+}
+
+.b-sec .b-grid > .b-week + * {
+  margin-top: clamp(22px, 2.6cqi, 36px);
+}
+
+/* Header */
+
+.b-head {
+  padding-top: clamp(12px, 1.4vw, 20px);
+}
+
+.b-head__grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+}
+
+.b-head__wm {
+  justify-self: start;
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  margin-top: 12px;
+  color: var(--ink);
+  font-size: clamp(1.375rem, 6.4cqi, 1.75rem);
+  text-decoration: none;
+}
+
+.b-nav__list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0 clamp(10px, 4cqi, 16px);
+  list-style: none;
+}
+
+.b-nav a {
+  display: inline-flex;
+  align-items: center;
+  min-width: 44px;
+  min-height: 44px;
+  color: var(--ink);
+  font-family: var(--display);
+  font-size: clamp(0.875rem, 4.6cqi, 0.9375rem);
+  font-weight: 600;
+  font-stretch: 90%;
+  line-height: 1.2;
+  text-decoration: underline;
+  text-decoration-color: transparent;
+  text-decoration-thickness: 2px;
+  text-underline-offset: 0.3em;
+  transition: text-decoration-color 0.15s ease;
+}
+
+.b-nav a:hover {
+  text-decoration-color: var(--teal);
+}
+
+/* Hero, narrow: headline, photo edge to edge, words, actions */
+
+.b-hero__grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+}
+
+.b-hero__title {
+  padding-top: 18px;
+  font-family: var(--display);
+  font-size: clamp(2.3rem, 15cqi, 5.2rem);
+  font-variation-settings: "opsz" 96;
+  font-weight: 800;
+  font-stretch: 85%;
+  letter-spacing: -0.012em;
+  line-height: 0.94;
+}
+
+/* Keep each phrase of the headline together, so "1:1" never ends a line, where the width allows it */
+.b-hero__title span {
+  white-space: normal;
+}
+
+@container wrap (min-width: 480px) {
+  .b-hero__title span {
+    white-space: nowrap;
+  }
+}
+
+.b-hero__photo {
+  aspect-ratio: 1 / 1.08;
+  margin: 24px calc(-1 * var(--gut)) 0;
+}
+
+.b-hero__photo img {
+  object-position: 18% 22%;
+}
+
+.b-hero__sub {
+  max-width: 30em;
+  padding-top: 22px;
+  font-size: 1.125rem;
+  line-height: 1.5;
+}
+
+.b-hero__actions {
+  padding-top: 22px;
+}
+
+/* About */
+
+.b-about__text {
+  margin-top: 20px;
+}
+
+.b-about__ph {
+  margin-top: 32px;
+}
+
+.b-about__photo {
+  aspect-ratio: 3 / 2;
+  margin: clamp(48px, 7cqi, 96px) calc(-1 * var(--gut)) 0;
+}
+
+.b-about__photo img {
+  object-position: 54% 40%;
+}
+
+/* Programmes */
+
+.b-progs__intro {
+  margin-top: 20px;
+}
+
+.b-progs__photo {
+  aspect-ratio: 1 / 0.92;
+  margin: 36px calc(-1 * var(--gut)) 0;
+}
+
+.b-progs__photo img {
+  object-position: 60% 45%;
+}
+
+.b-progs__list {
+  display: grid;
+  gap: clamp(56px, 6cqi, 88px);
+  margin-top: clamp(56px, 7cqi, 104px);
+}
+
+.b-prog {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  justify-items: start;
+}
+
+.b-prog__level {
+  color: var(--teal);
+  font-family: var(--display);
+  font-size: 1.125rem;
+  font-weight: 750;
+  font-stretch: 90%;
+  line-height: 1.2;
+}
+
+.b-prog__name {
+  margin-top: 6px;
+  font-family: var(--display);
+  font-size: clamp(2.5rem, 1rem + 5cqi, 4.75rem);
+  font-variation-settings: "opsz" 96;
+  font-weight: 800;
+  font-stretch: 85%;
+  letter-spacing: -0.012em;
+  line-height: 0.94;
+  text-wrap: balance;
+}
+
+.b-prog__facts {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2px 24px;
+  margin-top: 14px;
+  font-family: var(--display);
+  font-size: clamp(1.5rem, 1rem + 1.6cqi, 2.375rem);
+  font-weight: 750;
+  font-stretch: 88%;
+  line-height: 1.1;
+}
+
+.b-prog__body {
+  display: grid;
+  justify-items: start;
+  width: 100%;
+}
+
+.b-prog .b-week--card {
+  width: 100%;
+  margin-top: 24px;
+}
+
+.b-prog__weekly {
+  margin-top: 8px;
+  font-family: var(--display);
+  font-size: 1.0625rem;
+  font-weight: 650;
+  font-stretch: 92%;
+  line-height: 1.3;
+}
+
+.b-prog__who {
+  max-width: 26em;
+  margin-top: 14px;
+  font-size: 1.0625rem;
+  line-height: 1.5;
+}
+
+.b-prog .b-btn {
+  margin-top: 20px;
+}
+
+/* Comparison table */
+
+.b-compare {
+  margin-top: clamp(72px, 8cqi, 120px);
+}
+
+.b-compare__body {
+  margin-top: 20px;
+}
+
+.b-table {
+  width: 100%;
+  border-collapse: collapse;
+  table-layout: fixed;
+  font-family: var(--display);
+  font-size: 0.9375rem;
+  font-stretch: 92%;
+  font-weight: 450;
+  line-height: 1.3;
+}
+
+.b-table__rowhead {
+  width: 27%;
+}
+
+.b-table th,
+.b-table td {
+  padding: 0.7em 0.6em 0.7em 0;
+  border-bottom: 1px solid var(--hair);
+  text-align: left;
+  vertical-align: top;
+  overflow-wrap: break-word;
+}
+
+.b-table thead th,
+.b-table thead td {
+  padding-top: 0;
+  border-bottom: 2px solid var(--ink);
+}
+
+.b-table th {
+  font-weight: 700;
+  font-stretch: 88%;
+}
+
+.b-table thead th {
+  font-size: 1.0625rem;
+  font-weight: 750;
+}
+
+.b-table__tbc {
+  color: var(--slate);
+}
+
+@container wrap (max-width: 599px) {
+  .b-table {
+    font-size: 0.875rem;
+  }
+
+  .b-table__rowhead {
+    width: 30%;
+  }
+
+  .b-table th,
+  .b-table td {
+    padding-right: 0.45em;
+  }
+
+  .b-table tbody th {
+    font-stretch: 88%;
+  }
+
+  .b-table thead th {
+    font-size: 0.9375rem;
+  }
+}
+
+@container wrap (max-width: 359px) {
+  .b-table {
+    font-size: 0.875rem;
+  }
+}
+
+.b-compare__note {
+  margin-top: 16px;
+}
+
+/* Coaching */
+
+.b-coach__text {
+  margin-top: 20px;
+}
+
+.b-coach__h3 {
+  margin-top: clamp(56px, 7cqi, 96px);
+}
+
+.b-steps {
+  display: grid;
+  gap: 24px;
+  margin-top: 24px;
+  list-style: none;
+}
+
+.b-steps li {
+  display: grid;
+  grid-template-columns: 3.25rem minmax(0, 1fr);
+  align-items: start;
+  align-content: start;
+  gap: 4px 14px;
+}
+
+.b-steps__n {
+  font-family: var(--display);
+  font-size: 3.5rem;
+  font-variation-settings: "opsz" 96;
+  font-weight: 800;
+  font-stretch: 85%;
+  line-height: 0.82;
+}
+
+.b-steps__t {
+  max-width: 22em;
+  padding-top: 2px;
+  font-size: 1.125rem;
+  line-height: 1.5;
+  text-wrap: pretty;
+}
+
+.b-stories {
+  margin-top: 24px;
+}
+
+.b-apply {
+  margin-top: clamp(72px, 8cqi, 120px);
+}
+
+.b-apply__photo {
+  aspect-ratio: 760 / 460;
+  margin-top: 24px;
+}
+
+.b-form {
+  margin-top: 28px;
+}
+
+.b-form__fields {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 18px 16px;
+}
+
+.b-field {
+  display: grid;
+  gap: 6px;
+}
+
+.b-field label {
+  font-family: var(--display);
+  font-size: 1rem;
+  font-weight: 650;
+  font-stretch: 92%;
+  line-height: 1.25;
+}
+
+.b-field input {
+  width: 100%;
+  min-height: 52px;
+  margin: 0;
+  padding: 0.6em 0.8em;
+  border: 1.5px solid var(--slate);
+  border-radius: 2px;
+  background: var(--field);
+  color: var(--ink);
+  font-family: var(--text);
+  font-size: 1.0625rem;
+  line-height: 1.3;
+}
+
+.b-field input:focus-visible {
+  border-color: var(--ink);
+  outline-offset: 2px;
+}
+
+.b-form__end {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px 20px;
+  margin-top: 26px;
+}
+
+/* A note from Marcos */
+
+.b-story__text {
+  margin-top: 24px;
+}
+
+.b-story__portrait {
+  margin-top: var(--tick);
+}
+
+/* More, kept small */
+
+.b-sec--small {
+  padding-top: clamp(64px, 7vw, 112px);
+}
+
+.b-more__body {
+  display: grid;
+  gap: 16px;
+  margin-top: 16px;
+}
+
+.b-more__text {
+  max-width: 30em;
+}
+
+/* Training notes */
+
+.b-notes__intro {
+  margin-top: 16px;
+}
+
+.b-notes__list {
+  margin-top: 32px;
+}
+
+/* Final call */
+
+.b-final__title {
+  font-family: var(--display);
+  font-size: clamp(2.75rem, 14cqi, 5.5rem);
+  font-variation-settings: "opsz" 96;
+  font-weight: 800;
+  font-stretch: 85%;
+  letter-spacing: -0.012em;
+  line-height: 0.92;
+  text-wrap: balance;
+}
+
+.b-final__actions {
+  margin-top: 26px;
+}
+
+.b-final__photo {
+  aspect-ratio: 760 / 585;
+  margin: 40px calc(-1 * var(--gut)) 0;
+}
+
+.b-final__photo img {
+  object-position: 50% 50%;
+}
+
+/* Footer */
+
+.b-foot {
+  padding: var(--sec) 0 clamp(20px, 2.4vw, 36px);
+}
+
+.b-foot .b-grid > .b-week + * {
+  margin-top: clamp(22px, 2.6cqi, 36px);
+}
+
+.b-foot__body {
+  display: grid;
+  gap: 22px;
+  margin-top: 22px;
+}
+
+.b-foot__ig {
+  display: grid;
+  justify-items: start;
+}
+
+.b-foot__label {
+  color: var(--slate);
+  font-family: var(--display);
+  font-size: 0.9375rem;
+  font-weight: 600;
+  font-stretch: 92%;
+  line-height: 1.3;
+}
+
+.b-foot__ig .b-link {
+  font-size: clamp(1.375rem, 1rem + 1.2cqi, 1.875rem);
+  font-weight: 750;
+  font-stretch: 88%;
+}
+
+.b-foot__wm {
+  margin: clamp(56px, 8cqi, 112px) 0 0 -0.03em;
+  font-size: calc(100cqi / 5.25);
+  font-variation-settings: "opsz" 96;
+  font-stretch: 85%;
+}
+
+/* From 480: pairs side by side */
+
+@container wrap (min-width: 480px) {
+  .b-pair,
+  .b-form__fields {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .b-ph--portrait {
+    aspect-ratio: 3 / 2;
+  }
+}
+
+/* 480 to 759: one column on a wide screen, so the photos get a calmer, wider frame */
+
+@container wrap (min-width: 480px) and (max-width: 759px) {
+  .b-about__photo {
+    aspect-ratio: 2 / 1;
+  }
+
+  .b-progs__photo {
+    aspect-ratio: 3 / 2;
+  }
+
+  .b-progs__photo img {
+    object-position: 60% 40%;
+  }
+
+  .b-apply__photo {
+    aspect-ratio: 5 / 2;
+  }
+
+  .b-apply__photo img {
+    object-position: 50% 45%;
+  }
+
+  .b-final__photo {
+    aspect-ratio: 2 / 1;
+  }
+
+  .b-final__photo img {
+    object-position: 50% 70%;
+  }
+}
+
+/* From 600: trios side by side, middle hero */
+
+@container wrap (min-width: 600px) {
+  .b-trio {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .b-ph--article {
+    aspect-ratio: 16 / 10;
+  }
+
+  .b-hero__grid {
+    grid-template-columns: repeat(7, minmax(0, 1fr));
+    grid-template-rows: auto auto auto 1fr;
+    column-gap: var(--tick);
+  }
+
+  .b-hero__title {
+    grid-column: 1 / -1;
+    grid-row: 1;
+    padding: clamp(16px, 2.4cqi, 28px) 0 clamp(24px, 3.6cqi, 40px);
+    font-size: 12.4cqi;
+    line-height: 0.93;
+  }
+
+  .b-hero__photo {
+    grid-column: 1 / 4;
+    grid-row: 2 / 5;
+    aspect-ratio: 0.66;
+    margin: 0;
+  }
+
+  .b-hero__photo img {
+    object-position: 100% 30%;
+  }
+
+  .b-hero__sub {
+    grid-column: 4 / -1;
+    grid-row: 2;
+    padding: 0 0 0 clamp(14px, 2.6cqi, 28px);
+    font-size: clamp(1.0625rem, 2.3cqi, 1.25rem);
+  }
+
+  .b-hero__actions {
+    grid-column: 4 / -1;
+    grid-row: 3;
+    padding: clamp(16px, 2.4cqi, 26px) 0 0 clamp(14px, 2.6cqi, 28px);
+  }
+
+  .b-about__photo,
+  .b-progs__photo,
+  .b-final__photo {
+    margin-inline: 0;
+  }
+
+  .b-steps {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: var(--tick);
+  }
+
+  .b-steps li {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 14px;
+    padding-right: 16px;
+  }
+
+  .b-steps__n {
+    font-size: clamp(3.5rem, 1rem + 6cqi, 6.5rem);
+  }
+}
+
+/* From 760: the seven-column page, as on the board */
+
+@container wrap (min-width: 760px) {
+  .b-grid,
+  .b-head__grid {
+    grid-template-columns: repeat(7, minmax(0, 1fr));
+    column-gap: var(--tick);
+  }
+
+  .b-grid > .b-week,
+  .b-head__grid > .b-week {
+    grid-column: 1 / -1;
+  }
+
+  /* Header: wordmark over the first three days, one link under each of the last four */
+
+  .b-head__wm {
+    grid-column: 1 / 4;
+    grid-row: 2;
+    align-self: center;
+    margin: 0;
+    padding-block: clamp(14px, 2cqi, 26px);
+    font-size: clamp(1.25rem, 2.3cqi, 1.875rem);
+  }
+
+  .b-nav {
+    grid-column: 4 / -1;
+    grid-row: 2;
+    align-self: center;
+  }
+
+  .b-nav__list {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: var(--tick);
+  }
+
+  .b-nav a {
+    font-size: clamp(0.9375rem, 1.45cqi, 1.125rem);
+  }
+
+  /* Hero: photo on the first three days, words on the other four */
+
+  .b-hero__grid {
+    --b-photo: calc((100cqi - 6 * var(--tick)) / 7 * 3 + 2 * var(--tick));
+    --b-in: clamp(20px, 2.6cqi, 32px);
+  }
+
+  .b-hero__photo {
+    position: relative;
+    grid-row: 1 / 5;
+    aspect-ratio: auto;
+    min-height: calc(var(--b-photo) * 1.42);
+  }
+
+  .b-hero__photo img {
+    position: absolute;
+    inset: 0;
+  }
+
+  .b-hero__title {
+    grid-column: 4 / -1;
+    grid-row: 1;
+    padding: clamp(34px, 3.4cqi, 44px) 0 clamp(18px, 2.3cqi, 30px) var(--b-in);
+    font-size: 8cqi;
+    line-height: 0.92;
+  }
+
+  .b-hero__title span {
+    display: block;
+  }
+
+  .b-hero__sub {
+    padding-left: var(--b-in);
+    font-size: clamp(1.125rem, 1.6cqi, 1.3125rem);
+  }
+
+  .b-hero__actions {
+    padding-left: var(--b-in);
+  }
+
+  /* About */
+
+  .b-about__title {
+    grid-column: 1 / 4;
+    grid-row: 2;
+  }
+
+  .b-about__text {
+    grid-column: 4 / -1;
+    grid-row: 2;
+    margin-top: clamp(22px, 2.6cqi, 36px);
+    padding-left: var(--in);
+  }
+
+  .b-about__ph {
+    grid-column: 4 / -1;
+    grid-row: 3;
+    margin-top: 40px;
+  }
+
+  .b-about__photo {
+    grid-column: 1 / -1;
+    grid-row: 4;
+    aspect-ratio: 1500 / 615;
+  }
+
+  /* Programmes: the runner faces left, so the photo sits right and heads into the words */
+
+  .b-progs > .b-wrap > .b-grid {
+    grid-template-rows: auto auto auto 1fr;
+  }
+
+  .b-progs__title {
+    grid-column: 1 / 5;
+    grid-row: 2;
+  }
+
+  .b-progs__intro {
+    grid-column: 1 / 5;
+    grid-row: 3;
+    padding-right: 32px;
+  }
+
+  .b-progs__photo {
+    grid-column: 5 / -1;
+    grid-row: 2 / 5;
+    aspect-ratio: 720 / 762;
+    margin-top: clamp(22px, 2.6cqi, 36px);
+  }
+
+  /* Each programme opens with its own week, drawn across the seven columns */
+
+  .b-prog {
+    grid-template-columns: repeat(7, minmax(0, 1fr));
+    grid-template-rows: auto auto auto 1fr;
+    column-gap: var(--tick);
+    align-items: start;
+  }
+
+  .b-prog .b-week--card {
+    --tick: 6px;
+    grid-column: 1 / -1;
+    grid-row: 1;
+    height: clamp(12px, 1.1cqi, 16px);
+    margin: 0 0 clamp(20px, 2.4cqi, 32px);
+  }
+
+  .b-prog__head {
+    grid-column: 1 / 5;
+    grid-row: 2;
+    padding-right: 24px;
+  }
+
+  .b-prog__name {
+    font-size: clamp(3rem, 7cqi, 6rem);
+  }
+
+  .b-prog__facts {
+    grid-column: 1 / 5;
+    grid-row: 3;
+    margin-top: clamp(14px, 1.6cqi, 22px);
+    font-size: clamp(1.625rem, 2.9cqi, 2.5rem);
+  }
+
+  .b-prog__body {
+    grid-column: 5 / -1;
+    grid-row: 2 / 5;
+    padding-top: clamp(26px, 2.4cqi, 32px);
+    padding-left: var(--in);
+  }
+
+  .b-prog__weekly {
+    margin-top: 0;
+    font-size: clamp(1.0625rem, 1.4cqi, 1.1875rem);
+  }
+
+  .b-prog__who {
+    font-size: clamp(1.0625rem, 1.4cqi, 1.25rem);
+  }
+
+  /* Compare */
+
+  .b-compare__title {
+    grid-column: 1 / 4;
+  }
+
+  .b-compare__body {
+    grid-column: 4 / -1;
+    margin-top: 0;
+    padding-left: var(--in);
+  }
+
+  .b-table {
+    font-size: 1rem;
+  }
+
+  .b-table__rowhead {
+    width: 25%;
+  }
+
+  /* Coaching */
+
+  .b-coach__title {
+    grid-column: 1 / 4;
+    grid-row: 2;
+  }
+
+  .b-coach__text {
+    grid-column: 4 / -1;
+    grid-row: 2;
+    margin-top: clamp(22px, 2.6cqi, 36px);
+    padding-left: var(--in);
+  }
+
+  .b-coach__h3--steps {
+    grid-column: 1 / 4;
+    grid-row: 3;
+  }
+
+  .b-steps {
+    grid-column: 4 / -1;
+    grid-row: 3;
+    margin-top: clamp(56px, 7cqi, 96px);
+    padding-left: var(--in);
+  }
+
+  .b-coach__h3--stories {
+    grid-column: 1 / 4;
+    grid-row: 4;
+  }
+
+  .b-stories {
+    grid-column: 4 / -1;
+    grid-row: 4;
+    margin-top: clamp(56px, 7cqi, 96px);
+    padding-left: var(--in);
+  }
+
+  .b-apply__side {
+    grid-column: 1 / 4;
+    padding-right: 32px;
+  }
+
+  .b-form {
+    grid-column: 4 / -1;
+    margin-top: 0;
+    padding-left: var(--in);
+  }
+
+  /* A note from Marcos mirrors the opening: the empty frame sits where the hero photo sits */
+
+  .b-story > .b-wrap > .b-grid {
+    grid-template-rows: auto auto auto 1fr;
+  }
+
+  .b-story__portrait {
+    grid-column: 1 / 4;
+    grid-row: 2 / 5;
+    aspect-ratio: 1 / 1;
+    margin-top: clamp(22px, 2.6cqi, 36px);
+  }
+
+  .b-story__title {
+    grid-column: 4 / -1;
+    grid-row: 2;
+    padding-left: clamp(20px, 2.6cqi, 32px);
+  }
+
+  .b-story__text {
+    grid-column: 4 / -1;
+    grid-row: 3;
+    min-height: clamp(180px, 20cqi, 280px);
+    margin-left: clamp(20px, 2.6cqi, 32px);
+  }
+
+  /* More */
+
+  .b-more__title {
+    grid-column: 1 / 4;
+    grid-row: 2;
+  }
+
+  .b-more__body {
+    grid-column: 4 / -1;
+    grid-row: 2;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    column-gap: var(--tick);
+    align-items: start;
+    margin-top: clamp(22px, 2.6cqi, 36px);
+    padding-left: var(--in);
+  }
+
+  .b-more__text {
+    grid-column: 1 / 3;
+    padding-right: 24px;
+  }
+
+  .b-more__body .b-ph {
+    grid-column: 3 / -1;
+  }
+
+  /* Training notes */
+
+  .b-notes__title {
+    grid-column: 1 / 4;
+    grid-row: 2;
+  }
+
+  .b-notes__intro {
+    grid-column: 4 / -1;
+    grid-row: 2;
+    margin-top: clamp(22px, 2.6cqi, 36px);
+    padding-left: var(--in);
+  }
+
+  .b-notes__list {
+    grid-column: 1 / -1;
+    grid-row: 3;
+    margin-top: 48px;
+  }
+
+  /* Final call */
+
+  .b-final > .b-wrap > .b-grid {
+    grid-template-rows: auto auto auto 1fr;
+  }
+
+  .b-final__title {
+    grid-column: 1 / 5;
+    grid-row: 2;
+    padding-right: 24px;
+    font-size: 8cqi;
+  }
+
+  .b-final__actions {
+    grid-column: 1 / 5;
+    grid-row: 3;
+  }
+
+  .b-final__photo {
+    grid-column: 5 / -1;
+    grid-row: 2 / 5;
+    margin-top: clamp(22px, 2.6cqi, 36px);
+  }
+
+  /* Footer */
+
+  .b-foot__title {
+    grid-column: 1 / 4;
+    grid-row: 2;
+  }
+
+  .b-foot__body {
+    grid-column: 4 / -1;
+    grid-row: 2;
+    padding-left: var(--in);
+  }
+
+  .b-foot__wm {
+    grid-column: 1 / -1;
+    grid-row: 3;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    transition: none !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+@media (forced-colors: active) {
+  .b-week i,
+  .b-wm__rest {
+    forced-color-adjust: none;
+    background: CanvasText;
+  }
+
+  .b-ph,
+  .b-ph p {
+    border: 1px solid CanvasText;
+  }
+
+  .b-btn {
+    border-color: ButtonText;
+  }
+
+  .b-field input {
+    border-color: CanvasText;
+  }
+}
+
+/* ---------- Second review: the motif where it counts, programme names under the section heading ---------- */
+
+.b-rule {
+  display: block;
+  grid-column: 1 / -1;
+  height: 1px;
+  background: var(--ink);
+}
+
+.b-sec .b-grid > .b-rule + * {
+  margin-top: clamp(22px, 2.6cqi, 36px);
+}
+
+.b-prog__name {
+  font-size: clamp(2.25rem, 1rem + 3.2cqi, 3.5rem);
+}
+
+.b-steps__n {
+  font-size: 3rem;
+}
+
+@container wrap (min-width: 760px) {
+  .b-prog__name {
+    font-size: clamp(2.75rem, 4cqi, 3.75rem);
+  }
+
+  .b-steps__n {
+    font-size: clamp(3rem, 1rem + 2.6cqi, 3.5rem);
+  }
+}
+
+/* The cross stays on image placeholders only. */
+.b-ph--text,
+.b-ph--small,
+.b-ph--story,
+.b-ph--article {
+  background-image: none;
+}
+
+.b-about__photo img {
+  object-position: 50% 22%;
+}
