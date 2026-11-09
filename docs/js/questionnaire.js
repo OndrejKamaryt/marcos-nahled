@@ -462,7 +462,7 @@
     return field.controls[0].value.trim();
   }
 
-  /* A value we filled in from his public page and he has not changed. The
+  /* A value we filled in from a public page and the visitor has not changed. The
      text and the post say so, so nobody reads it as confirmed. */
   function isUntouchedPrefill(field) {
     if (field.isChoice) return false;
@@ -575,7 +575,7 @@
   function deliveryIsStale() {
     if (sending) return;
     if (sent) {
-      // He has edited after a successful send: say so instead of going quiet.
+      // The visitor edited after a successful send: say so instead of going quiet.
       clearDelivery();
       setStatus(msg("sent-earlier"));
       return;

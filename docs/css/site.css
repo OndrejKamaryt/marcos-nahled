@@ -637,7 +637,7 @@ body {
   color: var(--fc-muted);
 }
 
-/* The first step is the one in his hands. */
+/* The first step is the one in the visitor's hands. */
 .fc-step:first-child {
   border-top: 2px solid var(--fc-accent);
   padding-top: 17px;

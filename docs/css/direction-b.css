@@ -797,7 +797,7 @@
   margin-top: 20px;
 }
 
-/* Programme card, wider: the runner faces left, so the photo sits right and he runs into the text */
+/* Programme card, wider: the runner faces left, so the photo sits right and the runner heads into the text */
 
 @container mpb-page (min-width: 560px) {
   .dir-b .dir-b__card-grid {
