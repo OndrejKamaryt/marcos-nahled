@@ -1,0 +1,6 @@
+*.docx
+podklady/
+node_modules/
+.claude/
+Thumbs.db
+desktop.ini
