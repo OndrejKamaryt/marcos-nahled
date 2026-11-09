@@ -106,6 +106,7 @@
 }
 
 .dir-a .dir-a__caption {
+  max-width: 36em;
   font-size: 0.9375rem;
   line-height: 1.35;
   color: var(--a-stone);
@@ -779,7 +780,7 @@
   }
 
   .dir-a .dir-a__card-photo img {
-    object-position: 50% 12%;
+    object-position: 50% 60%;
   }
 
   .dir-a .dir-a__card-main {
@@ -798,6 +799,12 @@
 /* From 920: full seven-column mosaic */
 
 @container dir-a (min-width: 920px) {
+  /* The photo is narrow here, so the tag moves down onto the empty track. */
+  .dir-a .dir-a__draft--tag {
+    top: auto;
+    bottom: 0;
+  }
+
   .dir-a .dir-a__head {
     grid-template-columns: minmax(0, 3fr) minmax(0, 4fr);
     align-items: start;

@@ -464,7 +464,7 @@ body {
 }
 
 .fc-rows--measure > li {
-  padding-right: max(0px, calc(100% - 58ch));
+  padding-right: max(0px, calc(100% - 56ch));
 }
 
 .fc-after-rows {
@@ -1101,6 +1101,12 @@ textarea.fc-input {
   gap: 14px;
 }
 
+@media (max-width: 359px) {
+  .fc-cards {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
 .fc-card {
   display: flex;
   flex-direction: column;
@@ -1262,7 +1268,7 @@ textarea.fc-input {
 }
 
 .fc-footer p {
-  max-width: 76ch;
+  max-width: 56ch;
 }
 
 /* Still in the sentence, with a 44px target. */

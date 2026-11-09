@@ -350,7 +350,7 @@
 .dir-b .dir-b__ph--pull img {
   position: absolute;
   inset: 0;
-  object-position: 50% 50%;
+  object-position: 82% 50%;
 }
 
 .dir-b .dir-b__ph--chain {
@@ -571,7 +571,7 @@
 
 /* Hero concept, middle widths: seven columns, draft label and headline as one block above the photo */
 
-@container mpb-page (min-width: 520px) {
+@container mpb-page (min-width: 600px) {
   .dir-b .dir-b__hero-grid {
     --b-col: calc((100cqi - 6 * var(--b-tick)) / 7);
     --b-photo: calc(3 * var(--b-col) + 2 * var(--b-tick));

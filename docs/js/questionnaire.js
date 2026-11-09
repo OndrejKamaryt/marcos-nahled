@@ -145,9 +145,12 @@
       var current = checked(condition.source).map(function (control) {
         return control.value;
       });
-      var show = current.some(function (value) {
-        return condition.values.indexOf(value) !== -1;
-      });
+      // Conditions run in page order, so a group inside a closed group stays closed.
+      var show =
+        !condition.el.parentElement.closest("[hidden]") &&
+        current.some(function (value) {
+          return condition.values.indexOf(value) !== -1;
+        });
       condition.el.hidden = !show;
       condition.fields.forEach(function (field) {
         field.controls.forEach(function (control) {
@@ -173,8 +176,9 @@
       return field.required && !hasValue(field) ? msg("no-option") : "";
     }
     var value = field.controls[0].value.trim();
-    if (field.kind === "url") {
-      if (!value) return field.required ? msg("link-empty") : "";
+    // Only a required link has to be a full address. An optional one can hold any note, such as "n/a".
+    if (field.kind === "url" && field.required) {
+      if (!value) return msg("link-empty");
       return isFullLink(value) ? "" : msg("link-invalid");
     }
     return field.required && !value ? msg("text-empty") : "";
@@ -307,6 +311,23 @@
     return shown.some(hasValue);
   }
 
+  var allAnswered = false;
+  var inForm = false;
+  var ctaText = ui.headerCta.textContent;
+  var ctaHref = ui.headerCta.getAttribute("href");
+
+  /* While the form is on screen, the header button gives way to the progress
+     line. Once every required answer is in, it comes back and leads to the
+     last step, which can be a long way down on a phone. */
+  function updateHeader() {
+    var toLastStep = inForm && allAnswered;
+    ui.headerCta.hidden = inForm && !allAnswered;
+    ui.headerCta.textContent = toLastStep ? msg("header-last-step") : ctaText;
+    ui.headerCta.setAttribute("href", toLastStep ? "#last-step" : ctaHref);
+    ui.headerText.hidden = !inForm || allAnswered;
+    ui.headerTrack.hidden = !inForm;
+  }
+
   function updateProgress() {
     var total = trackedQuestions.length;
     var answered = trackedQuestions.filter(isAnswered).length;
@@ -317,6 +338,8 @@
     ui.headerText.textContent = text;
     ui.progressFill.style.transform = scale;
     ui.headerFill.style.transform = scale;
+    allAnswered = answered === total;
+    updateHeader();
   }
 
   /* ------------------------------------------------------------------
@@ -348,11 +371,15 @@
   function collectValues() {
     var values = {};
     fields.forEach(function (field) {
-      values[field.name] = field.isChoice
-        ? checked(field).map(function (control) {
-            return control.value;
-          })
-        : field.controls[0].value;
+      if (field.isChoice) {
+        values[field.name] = checked(field).map(function (control) {
+          return control.value;
+        });
+        return;
+      }
+      // An untouched default stays out of the draft, so a corrected one reaches a returning visitor.
+      var control = field.controls[0];
+      if (control.value !== control.defaultValue) values[field.name] = control.value;
     });
     return values;
   }
@@ -489,7 +516,7 @@
     var version = form.elements.form_version.value;
     var created = new Date(form.elements.submitted_at.value).toLocaleString("en-GB", {
       dateStyle: "long",
-      timeStyle: "short"
+      timeStyle: "long"
     });
     var lines = [
       msg("download-heading"),
@@ -532,6 +559,7 @@
 
   var mode = "preview";
   var sending = false;
+  var editedWhileSending = false;
   var sent = false;
   var statusKind = "";
 
@@ -573,7 +601,10 @@
      any text in the fallback box no longer match the page. A failed send stays
      on screen with its options: it is still true. */
   function deliveryIsStale() {
-    if (sending) return;
+    if (sending) {
+      editedWhileSending = true;
+      return;
+    }
     if (sent) {
       // The visitor edited after a successful send: say so instead of going quiet.
       clearDelivery();
@@ -682,6 +713,7 @@
     if (!validate()) return;
 
     sending = true;
+    editedWhileSending = false;
     stamp();
     ui.send.setAttribute("aria-disabled", "true");
     setStatus(msg("sending"));
@@ -702,6 +734,12 @@
       })
       .then(function (response) {
         if (!response.ok) throw new Error("HTTP " + response.status);
+        if (editedWhileSending) {
+          // The post left before this edit, so the newer answers stay here and in the draft.
+          ui.send.removeAttribute("aria-disabled");
+          setStatus(msg("sent-earlier"), "", true);
+          return;
+        }
         sent = true;
         forgetDraft();
         setDraftLine("");
@@ -802,10 +840,8 @@
         entries.forEach(function (entry) {
           atTop[entry.target === form ? "form" : "head"] = entry.isIntersecting;
         });
-        var inForm = atTop.form && !atTop.head;
-        ui.headerCta.hidden = inForm;
-        ui.headerText.hidden = !inForm;
-        ui.headerTrack.hidden = !inForm;
+        inForm = atTop.form && !atTop.head;
+        updateHeader();
       },
       { rootMargin: "0px 0px -90% 0px" }
     );
