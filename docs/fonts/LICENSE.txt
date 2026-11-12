@@ -18,6 +18,18 @@ Copyright 2022 The Bricolage Grotesque Project Authors (https://github.com/ateli
 b/  Literata
 Copyright 2017 The Literata Project Authors (https://github.com/googlefonts/literata) Literata-Italic[opsz,wght].ttf: Copyright 2017 The Literata Project Authors (https://github.com/googlefonts/literata)
 
+frames/  Archivo
+Copyright 2020 The Archivo Project Authors (https://github.com/Omnibus-Type/Archivo)
+
+frames/  Hanken Grotesk
+Copyright 2021 The Hanken Grotesk Project Authors (https://github.com/marcologous/hanken-grotesk)
+
+frames/  Sofia Sans Semi Condensed
+Copyright 2019 The Sofia Sans Project Authors (https://github.com/lettersoup/Sofia-Sans)
+
+frames/  Geist
+Copyright 2024 The Geist Project Authors (https://github.com/vercel/geist-font)
+
 ------------------------------------------------------------------------
 
 This Font Software is licensed under the SIL Open Font License, Version 1.1.
